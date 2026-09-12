@@ -26,6 +26,8 @@
 
 - 找到url为 https://drive-m.quark.cn/1/clouddrive/capacity/growth/info 的请求信息
 
+   【电脑端】夸克pc端，使用fiddler抓包，搜索“kps=”等关键字
+
 - 复制url后面的参数: kps sign vcode 粘贴到环境变量
 
 - 环境变量名为 COOKIE_QUARK 多账户用 回车 或 && 分开，例如:（可以直接把你填入的值中的 & 符号替换成 英文分号，不然很容易配错cookie值）
