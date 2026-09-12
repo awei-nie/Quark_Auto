@@ -2,19 +2,24 @@ name: Quark Sign-in
 
 on:
   schedule:
-    # 每天北京时间凌晨 00:00 自动运行
+    # 每天北京时间凌晨 00:00 自动执行
     - cron: '0 0 * * *'
       timezone: 'Asia/Shanghai'
 
-  # 保留手动运行按钮
+  # 同时保留手动运行按钮
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quark-signin
+  cancel-in-progress: false
 
 jobs:
   sign-in:
+    name: Quark Sign-in
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
 
     steps:
       - name: Checkout code
@@ -23,13 +28,17 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
-          python-version: '3.x'
+          python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install requests
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
 
       - name: Run Quark Sign-in
         env:
           COOKIE_QUARK: ${{ secrets.COOKIE_QUARK }}
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+          DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
         run: |
           python checkIn_Quark.py
